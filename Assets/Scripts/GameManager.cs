@@ -5,28 +5,35 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-	public static void LoadStartScene()
+	// Singleton GameManager
+	protected static GameManager instance = null;
+
+	// Public instance methods, since UI can't access statics
+	// http://answers.unity3d.com/questions/840906/ugui-ui-button-onclick-static-methods.html
+	public void LoadStartScene()
 	{
+		Debug.Log("Loading Start Scene");
 		SceneManager.LoadScene(0);
 	}
 
-	public static void LoadNextLevel()
+	public void LoadNextLevel()
 	{
-		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+		int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
+		Debug.Log("Loading Next Scene: " + nextSceneIndex.ToString());
+		SceneManager.LoadScene(nextSceneIndex);
 	}
 
-	public static void LoadEndScene()
+	public void LoadEndScene()
 	{
-		SceneManager.LoadScene(SceneManager.sceneCount - 1);
+		Debug.Log("Loading End Scene");
+		SceneManager.LoadScene(SceneManager.sceneCountInBuildSettings - 1);
 	}
 
 	private void Awake()
 	{
-		
-	}
-	
-	private void Update()
-	{
-		
+		// Enforce singleton pattern
+		if (instance == null) { instance = this; }
+		else { Destroy(gameObject); }
+		DontDestroyOnLoad(instance);
 	}
 }
