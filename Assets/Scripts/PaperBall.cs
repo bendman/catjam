@@ -2,25 +2,61 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(TapHandlers))]
 public class PaperBall : MonoBehaviour
 {
-	private Rigidbody myRigidbody;
+	[SerializeField]
 	private float rotationSpeed = 4f;
+
+	private Rigidbody myRigidbody;
+	private TapHandlers myTapHandlers;
+	private bool isHolding = false;
+	private Vector3 dragPosition;
 
 	private void Awake()
 	{
 		myRigidbody = GetComponent<Rigidbody>();
+		myTapHandlers = GetComponent<TapHandlers>();
 	}
 
-	private void Start()
+	private void OnEnable()
 	{
 		RotateRandomly();
-		Throw();
+		Throw(0.5f, 0.8f, -1f);
+		myTapHandlers.OnTapDown += OnTapDown;
+		myTapHandlers.OnTapHold += OnTapHold;
+		myTapHandlers.OnTapUp += OnTapUp;
+		myTapHandlers.OnDrag += OnDrag;
 	}
 
-	private void Update()
+	private void OnDisable()
 	{
-		HandleTaps();
+		myTapHandlers.OnTapDown -= OnTapDown;
+		myTapHandlers.OnTapHold -= OnTapHold;
+		myTapHandlers.OnTapUp -= OnTapUp;
+		myTapHandlers.OnDrag -= OnDrag;
+	}
+
+	private void OnTapDown(Collider collider, Vector2 position) { Reflect(); }
+	private void OnTapHold(Collider collider)
+	{
+		isHolding = true;
+		myRigidbody.isKinematic = true;
+		myRigidbody.velocity = Vector3.zero;
+		dragPosition = Camera.main.WorldToScreenPoint(transform.position);
+	}
+	private void OnTapUp(Vector2 position)
+	{
+		if (!isHolding) { return; }
+		myRigidbody.isKinematic = false;
+		Throw(-0.7f, 0.8f, 1f); // TODO: base throw on drag
+	}
+	private void OnDrag(Vector2 position)
+	{
+		// if (!isHolding) { return; }
+		Vector3 targetPosition = Camera.main.ScreenToWorldPoint(new Vector3(position.x, position.y, dragPosition.z));
+		transform.position = targetPosition;
 	}
 
 	/// <summary>
@@ -35,54 +71,17 @@ public class PaperBall : MonoBehaviour
 	/// <summary>
 	/// Throw the ball towards the player
 	/// </summary>
-	private void Throw()
+	private void Throw(float x, float y, float z)
 	{
-		myRigidbody.AddForce(0.5f, 0.8f, -1f, ForceMode.Impulse);
+		myRigidbody.AddForce(x, y, z, ForceMode.Impulse);
 	}
 
 	/// <summary>
 	/// Reflect the ball back to the source
 	/// </summary>
-	public void Reflect()
+	private void Reflect()
 	{
 		myRigidbody.velocity = myRigidbody.velocity * -1;
 		RotateRandomly();
-	}
-
-	/// <summary>
-	/// Handle player taps on the ball
-	/// </summary>
-	private void HandleTaps()
-	{
-		// TODO: only listen for taps when the ball is near the player
-		// TODO: distinguish between taps (reflect) and holds (catch/throw)
-		// TODO: tell when the player tapped the ball itself
-
-		Vector2 tapPosition;
-		// Get tap position
-		if (Input.touchSupported && Input.touchCount > 0)
-		{
-			// TODO: handle multitouch?
-			// Ensure the touch just began
-			if (Input.GetTouch(0).phase != TouchPhase.Began) { return; }
-			tapPosition = Input.GetTouch(0).position;
-		}
-		// Shim for debugging with a mouse
-		else if (Input.GetMouseButtonDown(0)) { tapPosition = Input.mousePosition; }
-		// Player isn't interacting, so we're done
-		else { return; }
-
-		// Detect if the player hit the ball
-		Ray raycast = Camera.main.ScreenPointToRay(tapPosition);
-		RaycastHit raycastHit;
-		if (Physics.Raycast(raycast, out raycastHit))
-		{
-			if (raycastHit.collider.gameObject == gameObject)
-			{
-				Debug.Log("Hit the ball! " + tapPosition);
-				Reflect();
-			}
-		}
-
 	}
 }
