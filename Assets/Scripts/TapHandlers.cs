@@ -26,8 +26,8 @@ public class TapHandlers : MonoBehaviour
 	{
 		HandleDowns();
 		HandleHolds();
-		HandleUps();
 		HandleDrags();
+		HandleUps();
 	}
 
 	/// <summary>

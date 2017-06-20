@@ -13,6 +13,7 @@ public class PaperBall : MonoBehaviour
 	private TapHandlers myTapHandlers;
 	private bool isHolding = false;
 	private Vector3 dragPosition;
+	private List<Vector3> previousPositions = new List<Vector3>();
 
 	private void Awake()
 	{
@@ -50,13 +51,16 @@ public class PaperBall : MonoBehaviour
 	{
 		if (!isHolding) { return; }
 		myRigidbody.isKinematic = false;
-		Throw(-0.7f, 0.8f, 1f); // TODO: base throw on drag
+		Vector3 movement = transform.position - previousPositions[0];
+		Debug.Log(movement);
+		Throw(movement.x * 5, movement.y * 5, movement.y * 5);
 	}
 	private void OnDrag(Vector2 position)
 	{
-		// if (!isHolding) { return; }
 		Vector3 targetPosition = Camera.main.ScreenToWorldPoint(new Vector3(position.x, position.y, dragPosition.z));
 		transform.position = targetPosition;
+		previousPositions.Add(transform.position);
+		if (previousPositions.Count > 10) { previousPositions.RemoveAt(0); }
 	}
 
 	/// <summary>
