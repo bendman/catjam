@@ -88,4 +88,9 @@ public class PaperBall : MonoBehaviour
 		myRigidbody.velocity = myRigidbody.velocity * -1;
 		RotateRandomly();
 	}
+
+	public bool IsTowardsCat()
+	{
+		return (myRigidbody.velocity.z > 0);
+	}
 }
