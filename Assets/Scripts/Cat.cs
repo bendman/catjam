@@ -24,19 +24,15 @@ public class Cat : MonoBehaviour {
 	}
 
 	void Move(){
-		float direction = 1.0f;
+		// Only follow the ball if the cat is receiving
+		if (!ball.IsTowardsCat()) { return; }
 
-		if ((Mathf.Abs(this.transform.position.x - ball.transform.position.x) < followThreshold) || !ball.IsTowardsCat()) {
-			return;
-		}
+		// Determine how far the cat will go.
+		// His target is all the way to the ball (ball.x - cat.x)
+		// but limited by maxSpeed in either direction
+		float distance = Mathf.Clamp(ball.transform.position.x - transform.position.x, -maxSpeed, maxSpeed);
 
-		if (this.transform.position.x > ball.transform.position.x) {
-			direction = -1.0f;
-		}
-
-		Debug.Log (direction + "  this " + transform.position.x + " ball " + ball.transform.position.x);
-
-		float targetX = transform.position.x + (direction * maxSpeed * Time.deltaTime);
+		float targetX = transform.position.x + (distance * Time.deltaTime);
 		transform.position = new Vector3(Mathf.Clamp (targetX, -table.transform.lossyScale.x * 0.5f, table.transform.lossyScale.x * 0.5f), transform.position.y, transform.position.z);
 	}
 }
