@@ -23,12 +23,12 @@ public class PaperBall : MonoBehaviour
 
 	private void OnEnable()
 	{
-		RotateRandomly();
-		Throw(0.5f, 0.8f, -1f);
 		myTapHandlers.OnTapDown += OnTapDown;
 		myTapHandlers.OnTapHold += OnTapHold;
 		myTapHandlers.OnTapUp += OnTapUp;
 		myTapHandlers.OnDrag += OnDrag;
+
+		Throw(0.1f, 0.1f, -0.1f);
 	}
 
 	private void OnDisable()
@@ -52,8 +52,7 @@ public class PaperBall : MonoBehaviour
 		if (!isHolding) { return; }
 		myRigidbody.isKinematic = false;
 		Vector3 movement = transform.position - previousPositions[0];
-		Debug.Log(movement);
-		Throw(movement.x * 5, movement.y * 5, movement.y * 5);
+		Throw(movement.x, movement.y, movement.y);
 	}
 	private void OnDrag(Vector2 position)
 	{
@@ -75,8 +74,9 @@ public class PaperBall : MonoBehaviour
 	/// <summary>
 	/// Throw the ball towards the player
 	/// </summary>
-	private void Throw(float x, float y, float z)
+	public void Throw(float x, float y, float z)
 	{
+		RotateRandomly();
 		myRigidbody.AddForce(x, y, z, ForceMode.Impulse);
 	}
 
