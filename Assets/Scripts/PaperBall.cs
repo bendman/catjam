@@ -8,17 +8,21 @@ public class PaperBall : MonoBehaviour
 {
 	[SerializeField]
 	private float rotationSpeed = 4f;
+	[SerializeField]
+	private GameObject table;
 
 	private Rigidbody myRigidbody;
 	private TapHandlers myTapHandlers;
 	private bool isHolding = false;
 	private Vector3 dragPosition;
 	private List<Vector3> previousPositions = new List<Vector3>();
+	private SphereCollider myCollider;
 
 	private void Awake()
 	{
 		myRigidbody = GetComponent<Rigidbody>();
 		myTapHandlers = GetComponent<TapHandlers>();
+		myCollider = GetComponent<SphereCollider>();
 	}
 
 	private void OnEnable()
@@ -57,6 +61,8 @@ public class PaperBall : MonoBehaviour
 	private void OnDrag(Vector2 position)
 	{
 		Vector3 targetPosition = Camera.main.ScreenToWorldPoint(new Vector3(position.x, position.y, dragPosition.z));
+		float tableTop = (table.transform.lossyScale.y / 2) + table.transform.position.y;
+		targetPosition.y = Mathf.Max(targetPosition.y, table.transform.lossyScale.y);
 		transform.position = targetPosition;
 		previousPositions.Add(transform.position);
 		if (previousPositions.Count > 10) { previousPositions.RemoveAt(0); }
