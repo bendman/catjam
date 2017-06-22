@@ -17,12 +17,14 @@ public class PaperBall : MonoBehaviour
 	private Vector3 dragPosition;
 	private List<Vector3> previousPositions = new List<Vector3>();
 	private SphereCollider myCollider;
+	private BallSpawn ballSpawn;
 
 	private void Awake()
 	{
 		myRigidbody = GetComponent<Rigidbody>();
 		myTapHandlers = GetComponent<TapHandlers>();
 		myCollider = GetComponent<SphereCollider>();
+		ballSpawn = Object.FindObjectOfType<BallSpawn>();
 	}
 
 	private void OnEnable()
@@ -32,7 +34,7 @@ public class PaperBall : MonoBehaviour
 		myTapHandlers.OnTapUp += OnTapUp;
 		myTapHandlers.OnDrag += OnDrag;
 
-		Throw(0.05f, 0.1f, -0.1f);
+		Respawn();
 	}
 
 	private void OnDisable()
@@ -57,8 +59,10 @@ public class PaperBall : MonoBehaviour
 	}
 	private void OnTapUp(Vector2 position)
 	{
-		if (!IsWithinReach()) { return; }
 		if (!isHolding) { return; }
+		isHolding = false;
+
+		if (!IsWithinReach()) { return; }
 		myRigidbody.isKinematic = false;
 		Vector3 movement = transform.position - previousPositions[0];
 		Throw(movement.x, movement.y, movement.y);
@@ -84,6 +88,7 @@ public class PaperBall : MonoBehaviour
 
 	private bool IsWithinReach()
 	{
+		Debug.Log(isHolding + " " + transform.position.z);
 		return isHolding || transform.position.z <= 0.5f;
 	}
 
@@ -117,5 +122,18 @@ public class PaperBall : MonoBehaviour
 	public bool IsTowardsCat()
 	{
 		return (myRigidbody.velocity.z > 0);
+	}
+
+	public void Respawn()
+	{
+		// Reset state
+		isHolding = false;
+
+		// Stop its movement
+		myRigidbody.velocity = Vector3.zero;
+		myRigidbody.angularVelocity = Vector3.zero;
+
+		// Place it on the table in front of the player
+		transform.position = ballSpawn.transform.position;
 	}
 }
