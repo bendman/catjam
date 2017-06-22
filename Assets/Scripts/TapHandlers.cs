@@ -56,7 +56,7 @@ public class TapHandlers : MonoBehaviour
 		RaycastHit raycastHit;
 		if (Physics.Raycast(raycast, out raycastHit))
 		{
-			if (raycastHit.collider.gameObject == gameObject && OnTapDown != null) {
+			if (raycastHit.collider.gameObject == gameObject) {
 				currentTapStartTime = Time.time;
 				currentTapCollider = raycastHit.collider;
 				if (OnTapDown != null) { OnTapDown(raycastHit.collider, tapPosition); }

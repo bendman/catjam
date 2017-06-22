@@ -32,7 +32,7 @@ public class PaperBall : MonoBehaviour
 		myTapHandlers.OnTapUp += OnTapUp;
 		myTapHandlers.OnDrag += OnDrag;
 
-		Throw(0.1f, 0.1f, -0.1f);
+		Throw(0.05f, 0.1f, -0.1f);
 	}
 
 	private void OnDisable()
@@ -43,9 +43,13 @@ public class PaperBall : MonoBehaviour
 		myTapHandlers.OnDrag -= OnDrag;
 	}
 
-	private void OnTapDown(Collider collider, Vector2 position) { Reflect(); }
+	private void OnTapDown(Collider collider, Vector2 position) {
+		if (!IsWithinReach()) { return; }
+		Reflect();
+	}
 	private void OnTapHold(Collider collider)
 	{
+		if (!IsWithinReach()) { return; }
 		isHolding = true;
 		myRigidbody.isKinematic = true;
 		myRigidbody.velocity = Vector3.zero;
@@ -53,6 +57,7 @@ public class PaperBall : MonoBehaviour
 	}
 	private void OnTapUp(Vector2 position)
 	{
+		if (!IsWithinReach()) { return; }
 		if (!isHolding) { return; }
 		myRigidbody.isKinematic = false;
 		Vector3 movement = transform.position - previousPositions[0];
@@ -60,6 +65,7 @@ public class PaperBall : MonoBehaviour
 	}
 	private void OnDrag(Vector2 position)
 	{
+		if (!IsWithinReach()) { return; }
 		Vector3 targetPosition = Camera.main.ScreenToWorldPoint(new Vector3(position.x, position.y, dragPosition.z));
 
 		// Handle collisions with the table top
@@ -74,6 +80,11 @@ public class PaperBall : MonoBehaviour
 		transform.position = targetPosition;
 		previousPositions.Add(transform.position);
 		if (previousPositions.Count > 10) { previousPositions.RemoveAt(0); }
+	}
+
+	private bool IsWithinReach()
+	{
+		return isHolding || transform.position.z <= 0.5f;
 	}
 
 	/// <summary>
