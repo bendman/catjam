@@ -8,6 +8,18 @@ public class GameManager : MonoBehaviour
 	// Singleton GameManager
 	protected static GameManager instance = null;
 
+	private void Awake()
+	{
+		// Enforce singleton pattern
+		if (instance == null) { instance = this; }
+		else {
+			Destroy(gameObject);
+			return;
+		}
+
+		DontDestroyOnLoad(instance);
+	}
+
 	// Public instance methods, since UI can't access statics
 	// http://answers.unity3d.com/questions/840906/ugui-ui-button-onclick-static-methods.html
 	public void LoadStartScene()
@@ -27,13 +39,5 @@ public class GameManager : MonoBehaviour
 	{
 		Debug.Log("Loading End Scene");
 		SceneManager.LoadScene(SceneManager.sceneCountInBuildSettings - 1);
-	}
-
-	private void Awake()
-	{
-		// Enforce singleton pattern
-		if (instance == null) { instance = this; }
-		else { Destroy(gameObject); }
-		DontDestroyOnLoad(instance);
 	}
 }
