@@ -61,8 +61,16 @@ public class PaperBall : MonoBehaviour
 	private void OnDrag(Vector2 position)
 	{
 		Vector3 targetPosition = Camera.main.ScreenToWorldPoint(new Vector3(position.x, position.y, dragPosition.z));
+
+		// Handle collisions with the table top
 		float tableTop = (table.transform.lossyScale.y / 2) + table.transform.position.y;
-		targetPosition.y = Mathf.Max(targetPosition.y, table.transform.lossyScale.y);
+		float collisionRadius = myCollider.radius * transform.localScale.y;
+		if (targetPosition.y <= tableTop + collisionRadius)
+		{
+			targetPosition.z += targetPosition.y - transform.position.y;
+			targetPosition.y = Mathf.Max(targetPosition.y, tableTop + collisionRadius);
+		}
+
 		transform.position = targetPosition;
 		previousPositions.Add(transform.position);
 		if (previousPositions.Count > 10) { previousPositions.RemoveAt(0); }

@@ -16,7 +16,6 @@ public class Cat : MonoBehaviour {
 		ball = FindObjectOfType<PaperBall>();
 		//ball = GameObject.Find ("PaperBall");
 	}
-		
 	
 	// Update is called once per frame
 	void Update () {
