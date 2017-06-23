@@ -88,7 +88,6 @@ public class PaperBall : MonoBehaviour
 
 	private bool IsWithinReach()
 	{
-		Debug.Log(isHolding + " " + transform.position.z);
 		return isHolding || transform.position.z <= 0.5f;
 	}
 
@@ -102,13 +101,47 @@ public class PaperBall : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Throw the ball towards the player
+	/// Throw the ball
 	/// </summary>
 	public void Throw(float x, float y, float z)
 	{
+		// Calculate trajectory to detect if it's going too high
+		// float finalHeight = PredictTrajectoryHeight(transform.position, new Vector3(x, y, z), 2f);
+
+		// Reset forces
+		myRigidbody.angularVelocity = Vector3.zero;
+		myRigidbody.velocity = Vector3.zero;
+
+		// Execute the throw
 		RotateRandomly();
-		myRigidbody.AddForce(x, y, z, ForceMode.Impulse);
+		myRigidbody.AddForce(
+			x,
+			Mathf.Min(y, 0.13f),
+			Mathf.Min(z, 0.13f),
+			ForceMode.Impulse
+		);
 	}
+
+	// public static float PredictTrajectoryHeight(Vector3 initialPosition, Vector3 forceVector, float measurePointZ)
+	// {
+	// 	float zDistance = measurePointZ - initialPosition.z;
+	// 	float gravity = Physics.gravity.y * -1;
+	// 	float height = 0f;
+
+	// 	// Calculate throw angle given input forces
+	// 	// http://www.mathopenref.com/arctan.html
+	// 	float throwAngle = Mathf.Atan(forceVector.y / forceVector.z);
+
+	// 	// Calculate the velocity (ignore the x component, as it doesn't matter for cross-table velocity)
+	// 	// https://en.wikipedia.org/wiki/Pythagorean_theorem
+	// 	float velocity = Mathf.Sqrt(Mathf.Pow(forceVector.z, 2) + Mathf.Pow(forceVector.y, 2)) * 10;
+
+	// 	// Formula to calculate trajectory
+	// 	// https://en.wikipedia.org/wiki/Trajectory_of_a_projectile (note: their x is our z because 2d vs 3d)
+	// 	height = initialPosition.y + (zDistance * Mathf.Tan(throwAngle)) - ((gravity * Mathf.Pow(zDistance, 2)) / (2 * Mathf.Pow(velocity * Mathf.Cos(throwAngle), 2)));
+
+	// 	return height;
+	// }
 
 	/// <summary>
 	/// Reflect the ball back to the source
