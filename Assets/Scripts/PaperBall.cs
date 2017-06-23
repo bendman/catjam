@@ -10,8 +10,11 @@ public class PaperBall : MonoBehaviour
 	private float rotationSpeed = 4f;
 	[SerializeField]
 	private GameObject table;
+	[SerializeField]
+	private AudioClip[] ballCrunchSounds;
 
 	private Rigidbody myRigidbody;
+	private AudioSource myAudioSource;
 	private TapHandlers myTapHandlers;
 	private bool isHolding = false;
 	private Vector3 dragPosition;
@@ -22,6 +25,7 @@ public class PaperBall : MonoBehaviour
 	private void Awake()
 	{
 		myRigidbody = GetComponent<Rigidbody>();
+		myAudioSource = GetComponent<AudioSource>();
 		myTapHandlers = GetComponent<TapHandlers>();
 		myCollider = GetComponent<SphereCollider>();
 		ballSpawn = Object.FindObjectOfType<BallSpawn>();
@@ -47,7 +51,8 @@ public class PaperBall : MonoBehaviour
 
 	private void OnTapDown(Collider collider, Vector2 position) {
 		if (!IsWithinReach()) { return; }
-		Reflect();
+		// Reflect();
+		PlayRandomCrunch();
 	}
 	private void OnTapHold(Collider collider)
 	{
@@ -89,6 +94,12 @@ public class PaperBall : MonoBehaviour
 	private bool IsWithinReach()
 	{
 		return isHolding || transform.position.z <= 0.5f;
+	}
+
+	private void PlayRandomCrunch()
+	{
+		int clipIndex = Random.Range(0, ballCrunchSounds.Length);
+		myAudioSource.PlayOneShot(ballCrunchSounds[clipIndex]);
 	}
 
 	/// <summary>

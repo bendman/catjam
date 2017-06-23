@@ -9,10 +9,20 @@ public class Cat : MonoBehaviour {
 	[SerializeField]
 	private GameObject table;
 	[SerializeField]
+	private AudioClip[] happyClips;
+	[SerializeField]
+	private AudioClip[] upsetClips;
+	[SerializeField]
+	private AudioClip winClip;
+	[SerializeField]
+	private AudioClip loseClip;
+
 	private PaperBall ball;
+	private AudioSource myAudioSource;
 
 	void Awake () {
 		//table = GameObject.Find ("Table");
+		myAudioSource = GetComponent<AudioSource>();
 		ball = FindObjectOfType<PaperBall>();
 		//ball = GameObject.Find ("PaperBall");
 	}
@@ -33,5 +43,27 @@ public class Cat : MonoBehaviour {
 
 		float targetX = transform.position.x + (distance * Time.deltaTime);
 		transform.position = new Vector3(Mathf.Clamp (targetX, -table.transform.lossyScale.x * 0.5f, table.transform.lossyScale.x * 0.5f), transform.position.y, transform.position.z);
+	}
+
+	public void PlayHappySound()
+	{
+		int clipIndex = Random.Range(0, happyClips.Length);
+		myAudioSource.PlayOneShot(happyClips[clipIndex]);
+	}
+
+	public void PlayUpsetSound()
+	{
+		int clipIndex = Random.Range(0, upsetClips.Length);
+		myAudioSource.PlayOneShot(upsetClips[clipIndex]);
+	}
+
+	public void PlayWinSound()
+	{
+		myAudioSource.PlayOneShot(winClip);
+	}
+
+	public void PlayLoseSound()
+	{
+		myAudioSource.PlayOneShot(loseClip);
 	}
 }

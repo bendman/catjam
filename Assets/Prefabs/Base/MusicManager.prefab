@@ -52,7 +52,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.3
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -132,9 +132,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08b292f73216c4ce685de4c30a8b4889, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  launchMusic: {fileID: 8300000, guid: d302629a27b6f4c76bc8fc18d9403d35, type: 3}
   startMusic:
-  - {fileID: 8300000, guid: 1df2fb821f87f49e7a9698b4ecf6f2ba, type: 3}
-  - {fileID: 8300000, guid: 106458cb5f7ab445a824dcf5a97ca91e, type: 3}
+  - {fileID: 8300000, guid: ef33fe19ce9304ad3afa89d407e5827f, type: 3}
+  - {fileID: 8300000, guid: 1a04343ea19dd45a19b0314d9ecda78f, type: 3}
   gameplayMusic:
-  - {fileID: 8300000, guid: 1df2fb821f87f49e7a9698b4ecf6f2ba, type: 3}
-  - {fileID: 8300000, guid: 106458cb5f7ab445a824dcf5a97ca91e, type: 3}
+  - {fileID: 8300000, guid: ef33fe19ce9304ad3afa89d407e5827f, type: 3}
+  - {fileID: 8300000, guid: 1a04343ea19dd45a19b0314d9ecda78f, type: 3}

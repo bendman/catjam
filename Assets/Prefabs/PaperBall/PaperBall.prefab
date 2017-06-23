@@ -25,6 +25,7 @@ GameObject:
   - component: {fileID: 114664577249260972}
   - component: {fileID: 114483948110092766}
   - component: {fileID: 135780504853590914}
+  - component: {fileID: 82370146374034180}
   m_Layer: 0
   m_Name: PaperBall
   m_TagString: Untagged
@@ -99,6 +100,86 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!82 &82370146374034180
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1966384454541850}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!114 &114483948110092766
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -123,6 +204,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotationSpeed: 4
   table: {fileID: 1393384754978792, guid: 07571ef8da167004ca7eb7ea60669b80, type: 2}
+  ballCrunchSounds:
+  - {fileID: 8300000, guid: 80663bbbe7b4a4b3aa8fae1d8c6381d0, type: 3}
+  - {fileID: 8300000, guid: a1785680be74c489e84da534d6322268, type: 3}
+  - {fileID: 8300000, guid: b33faea8558ba4f15a3e58a4801842c6, type: 3}
+  - {fileID: 8300000, guid: a93e0260d03f14645a1cffe2572ec74f, type: 3}
 --- !u!135 &135780504853590914
 SphereCollider:
   m_ObjectHideFlags: 1
