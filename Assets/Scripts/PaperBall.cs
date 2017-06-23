@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(AudioSource))]
+[RequireComponent(typeof(Collider))]
 [RequireComponent(typeof(TapHandlers))]
 public class PaperBall : MonoBehaviour
 {
@@ -29,6 +31,8 @@ public class PaperBall : MonoBehaviour
 		myTapHandlers = GetComponent<TapHandlers>();
 		myCollider = GetComponent<SphereCollider>();
 		ballSpawn = Object.FindObjectOfType<BallSpawn>();
+
+		GameManager.SetBall(this);
 	}
 
 	private void OnEnable()
@@ -37,8 +41,6 @@ public class PaperBall : MonoBehaviour
 		myTapHandlers.OnTapHold += OnTapHold;
 		myTapHandlers.OnTapUp += OnTapUp;
 		myTapHandlers.OnDrag += OnDrag;
-
-		Respawn();
 	}
 
 	private void OnDisable()
@@ -165,18 +167,5 @@ public class PaperBall : MonoBehaviour
 	public bool IsTowardsCat()
 	{
 		return (myRigidbody.velocity.z > 0);
-	}
-
-	public void Respawn()
-	{
-		// Reset state
-		isHolding = false;
-
-		// Stop its movement
-		myRigidbody.velocity = Vector3.zero;
-		myRigidbody.angularVelocity = Vector3.zero;
-
-		// Place it on the table in front of the player
-		transform.position = ballSpawn.transform.position;
 	}
 }

@@ -13,7 +13,7 @@ public class CatScore : MonoBehaviour
 
 	private void OnTriggerEnter(Collider collider)
 	{
-		if (collider.GetComponent<PaperBall>())
+		if (collider.gameObject == GameManager.ball.gameObject)
 		{
 			scoreManager.OnCatScored();
 		}

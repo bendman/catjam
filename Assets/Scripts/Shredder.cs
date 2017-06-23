@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Shredder : MonoBehaviour
 {
-	private PaperBall paperBall;
+	private BallSpawn ballSpawn;
 
 	private void Awake()
 	{
-		paperBall = Object.FindObjectOfType<PaperBall>();
+		ballSpawn = Object.FindObjectOfType<BallSpawn>();
 	}
 
 	/// <summary>
@@ -18,9 +18,10 @@ public class Shredder : MonoBehaviour
 	private void OnTriggerExit(Collider other)
 	{
 		// Respawn the ball if it exits the play area
-		if (other.gameObject == paperBall.gameObject)
+		if (other.gameObject == GameManager.ball.gameObject)
 		{
-			paperBall.Respawn();
+			Destroy(GameManager.ball.gameObject);
+			ballSpawn.SpawnBall();
 		}
 		// Destroy other objects (if any) that leave the play area
 		else

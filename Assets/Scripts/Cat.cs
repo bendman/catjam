@@ -17,14 +17,11 @@ public class Cat : MonoBehaviour {
 	[SerializeField]
 	private AudioClip loseClip;
 
-	private PaperBall ball;
+	private GameManager gameManager;
 	private AudioSource myAudioSource;
 
 	void Awake () {
-		//table = GameObject.Find ("Table");
 		myAudioSource = GetComponent<AudioSource>();
-		ball = FindObjectOfType<PaperBall>();
-		//ball = GameObject.Find ("PaperBall");
 	}
 	
 	// Update is called once per frame
@@ -34,12 +31,12 @@ public class Cat : MonoBehaviour {
 
 	void Move(){
 		// Only follow the ball if the cat is receiving
-		if (!ball.IsTowardsCat()) { return; }
+		if (!GameManager.ball.IsTowardsCat()) { return; }
 
 		// Determine how far the cat will go.
 		// His target is all the way to the ball (ball.x - cat.x)
 		// but limited by maxSpeed in either direction
-		float distance = Mathf.Clamp(ball.transform.position.x - transform.position.x, -maxSpeed, maxSpeed);
+		float distance = Mathf.Clamp(GameManager.ball.transform.position.x - transform.position.x, -maxSpeed, maxSpeed);
 
 		float targetX = transform.position.x + (distance * Time.deltaTime);
 		transform.position = new Vector3(Mathf.Clamp (targetX, -table.transform.lossyScale.x * 0.5f, table.transform.lossyScale.x * 0.5f), transform.position.y, transform.position.z);

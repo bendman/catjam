@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
 	// Singleton GameManager
 	protected static GameManager instance = null;
 
+	public static PaperBall ball { get; private set; }
+
 	private void Awake()
 	{
 		// Enforce singleton pattern
@@ -18,6 +20,11 @@ public class GameManager : MonoBehaviour
 		}
 
 		DontDestroyOnLoad(instance);
+	}
+
+	public static void SetBall(PaperBall newBall)
+	{
+		ball = newBall;
 	}
 
 	// Public instance methods, since UI can't access statics

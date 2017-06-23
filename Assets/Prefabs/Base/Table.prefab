@@ -134,3 +134,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b5a1ba478d614897b3a59b97ee5175f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ballPrefabs:
+  - {fileID: 1345935590353990, guid: b7de966ded2c244c082c9567cd33b9df, type: 2}
+  - {fileID: 1017100654844146, guid: 358b580f5fc604f0caf82c2f937b3ec4, type: 2}
