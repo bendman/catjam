@@ -65,7 +65,7 @@ public class PaperBall : MonoBehaviour
 		if (!IsWithinReach()) { return; }
 		myRigidbody.isKinematic = false;
 		Vector3 movement = transform.position - previousPositions[0];
-		Throw(movement.x, movement.y, movement.y);
+		Throw(movement.x, movement.y);
 	}
 	private void OnDrag(Vector2 position)
 	{
@@ -103,7 +103,7 @@ public class PaperBall : MonoBehaviour
 	/// <summary>
 	/// Throw the ball
 	/// </summary>
-	public void Throw(float x, float y, float z)
+	public void Throw(float slide, float power)
 	{
 		// Calculate trajectory to detect if it's going too high
 		// float finalHeight = PredictTrajectoryHeight(transform.position, new Vector3(x, y, z), 2f);
@@ -114,12 +114,11 @@ public class PaperBall : MonoBehaviour
 
 		// Execute the throw
 		RotateRandomly();
-		myRigidbody.AddForce(
-			x,
-			Mathf.Min(y, 0.13f),
-			Mathf.Min(z, 0.13f),
-			ForceMode.Impulse
-		);
+
+		float finalPower = Mathf.Min(power, 0.13f);
+		float finalSlide = Mathf.Clamp(slide * (finalPower / power), -0.3f, 0.3f);
+
+		myRigidbody.AddForce(finalSlide, finalPower, finalPower, ForceMode.Impulse);
 	}
 
 	// public static float PredictTrajectoryHeight(Vector3 initialPosition, Vector3 forceVector, float measurePointZ)
