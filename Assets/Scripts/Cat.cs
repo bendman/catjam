@@ -5,6 +5,7 @@ using UnityEngine;
 public class Cat : MonoBehaviour {
 	public float maxSpeed = 2.0f;
 	public float followThreshold = 0.1f;
+	public float volleyPower = 0.1f;
 
 	[SerializeField]
 	private GameObject table;
@@ -65,5 +66,12 @@ public class Cat : MonoBehaviour {
 	public void PlayLoseSound()
 	{
 		myAudioSource.PlayOneShot(loseClip);
+	}
+
+	private void OnCollisionEnter(Collision other){
+		if (other.gameObject.name == "PaperBall") { 
+			//ball.Reflect ();
+			ball.Throw (-0.1f, -volleyPower);
+		}
 	}
 }
