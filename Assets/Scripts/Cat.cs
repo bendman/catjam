@@ -66,9 +66,9 @@ public class Cat : MonoBehaviour {
 	}
 
 	private void OnCollisionEnter(Collision other){
-		if (other.gameObject.name == "PaperBall") { 
+		if (other.gameObject == GameManager.ball.gameObject) { 
 			//ball.Reflect ();
-			ball.Throw (-0.1f, -volleyPower);
+			GameManager.ball.Throw (-0.1f, -volleyPower);
 		}
 	}
 }
