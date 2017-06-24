@@ -14,7 +14,9 @@ public class PaperBall : MonoBehaviour
 	private GameObject table;
 	[SerializeField]
 	private AudioClip[] ballCrunchSounds;
+	private Vector3 mov;
 
+	private static float reach = 0.5f;
 	private Rigidbody myRigidbody;
 	private AudioSource myAudioSource;
 	private TapHandlers myTapHandlers;
@@ -68,11 +70,13 @@ public class PaperBall : MonoBehaviour
 	{
 		if (!isHolding) { return; }
 		isHolding = false;
+		myRigidbody.isKinematic = false;
 
 		if (!IsWithinReach()) { return; }
-		myRigidbody.isKinematic = false;
 		Vector3 movement = transform.position - previousPositions[0];
-		Throw(movement.x, movement.y);
+		mov = movement;
+		Debug.Log(movement);
+		Throw(movement.x, Mathf.Max(movement.y, 0.01f));
 	}
 	private void OnDrag(Vector2 position)
 	{
@@ -84,9 +88,12 @@ public class PaperBall : MonoBehaviour
 		float collisionRadius = myCollider.radius * transform.localScale.y;
 		if (targetPosition.y <= tableTop + collisionRadius)
 		{
-			targetPosition.z += targetPosition.y - transform.position.y;
+			targetPosition.z -= transform.position.y - targetPosition.y;
 			targetPosition.y = Mathf.Max(targetPosition.y, tableTop + collisionRadius);
 		}
+
+		// Prevent the player from dragging the ball beyond their own reach
+		targetPosition.z = Mathf.Min(targetPosition.z, reach * 0.75f);
 
 		transform.position = targetPosition;
 		previousPositions.Add(transform.position);
@@ -95,7 +102,8 @@ public class PaperBall : MonoBehaviour
 
 	private bool IsWithinReach()
 	{
-		return isHolding || transform.position.z <= 0.5f;
+		// Last check is for when the ball is stuck in the middle
+		return isHolding || transform.position.z <= reach || Mathf.Abs(myRigidbody.velocity.z) <= 0.3f;
 	}
 
 	private void PlayRandomCrunch()
@@ -158,11 +166,11 @@ public class PaperBall : MonoBehaviour
 	/// <summary>
 	/// Reflect the ball back to the source
 	/// </summary>
-	public void Reflect()
-	{
-		myRigidbody.velocity = myRigidbody.velocity * -1;
-		RotateRandomly();
-	}
+	// public void Reflect()
+	// {
+	// 	myRigidbody.velocity = myRigidbody.velocity * -1;
+	// 	RotateRandomly();
+	// }
 
 	public bool IsTowardsCat()
 	{
