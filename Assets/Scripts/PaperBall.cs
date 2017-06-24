@@ -128,10 +128,10 @@ public class PaperBall : MonoBehaviour
 		// Execute the throw
 		RotateRandomly();
 
-		float finalPower = Mathf.Min(power, 0.13f);
+		float finalPower = Mathf.Clamp(power, -0.13f, 0.13f);
 		float finalSlide = Mathf.Clamp(slide * (finalPower / power), -0.3f, 0.3f);
 
-		myRigidbody.AddForce(finalSlide, finalPower, finalPower, ForceMode.Impulse);
+		myRigidbody.AddForce(finalSlide, Mathf.Abs(finalPower), finalPower, ForceMode.Impulse);
 	}
 
 	// public static float PredictTrajectoryHeight(Vector3 initialPosition, Vector3 forceVector, float measurePointZ)
@@ -158,7 +158,7 @@ public class PaperBall : MonoBehaviour
 	/// <summary>
 	/// Reflect the ball back to the source
 	/// </summary>
-	private void Reflect()
+	public void Reflect()
 	{
 		myRigidbody.velocity = myRigidbody.velocity * -1;
 		RotateRandomly();

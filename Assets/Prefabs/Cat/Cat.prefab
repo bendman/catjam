@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 212663816975134968}
   - component: {fileID: 114353618764132098}
   - component: {fileID: 82717295888139542}
+  - component: {fileID: 65902979467254786}
   m_Layer: 0
   m_Name: Cat
   m_TagString: Untagged
@@ -42,6 +43,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &65902979467254786
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1053552851189516}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.16, y: 0.2, z: 0.2}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!82 &82717295888139542
 AudioSource:
   m_ObjectHideFlags: 1
@@ -135,6 +148,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxSpeed: 2
   followThreshold: 0.1
+  volleyPower: 5
   table: {fileID: 1393384754978792, guid: 07571ef8da167004ca7eb7ea60669b80, type: 2}
   happyClips:
   - {fileID: 8300000, guid: 41be505107eca4e69a4f9160de245255, type: 3}
