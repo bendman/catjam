@@ -76,7 +76,7 @@ public class PaperBall : MonoBehaviour
 		Vector3 movement = transform.position - previousPositions[0];
 		mov = movement;
 		Debug.Log(movement);
-		Throw(movement.x, Mathf.Max(movement.y, 0.01f));
+		Throw(Mathf.Clamp(movement.x, -0.3f, 0.3f), Mathf.Max(movement.y, 0.01f));
 	}
 	private void OnDrag(Vector2 position)
 	{

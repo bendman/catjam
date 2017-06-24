@@ -68,7 +68,7 @@ public class Cat : MonoBehaviour {
 	private void OnCollisionEnter(Collision other){
 		if (other.gameObject == GameManager.ball.gameObject) { 
 			//ball.Reflect ();
-			GameManager.ball.Throw (-0.1f, -volleyPower);
+			GameManager.ball.Throw (Random.Range(-0.1f, 0.1f), -volleyPower);
 		}
 	}
 }
