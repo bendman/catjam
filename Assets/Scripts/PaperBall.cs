@@ -55,8 +55,9 @@ public class PaperBall : MonoBehaviour
 
 	private void OnTapDown(Collider collider, Vector2 position) {
 		if (!IsWithinReach()) { return; }
-		// Reflect();
+
 		PlayRandomCrunch();
+		previousPositions = new List<Vector3>();
 	}
 	private void OnTapHold(Collider collider)
 	{
@@ -75,7 +76,6 @@ public class PaperBall : MonoBehaviour
 		if (!IsWithinReach()) { return; }
 		Vector3 movement = transform.position - previousPositions[0];
 		mov = movement;
-		Debug.Log(movement);
 		Throw(Mathf.Clamp(movement.x, -0.3f, 0.3f), Mathf.Max(movement.y, 0.01f));
 	}
 	private void OnDrag(Vector2 position)
@@ -136,10 +136,18 @@ public class PaperBall : MonoBehaviour
 		// Execute the throw
 		RotateRandomly();
 
-		float finalPower = Mathf.Clamp(power, -0.13f, 0.13f);
-		float finalSlide = Mathf.Clamp(slide * (finalPower / power), -0.3f, 0.3f);
+		float finalPowerZ = Mathf.Clamp(power, -0.13f, 0.13f);
+		float finalSlide = Mathf.Clamp(slide * (finalPowerZ / power), -0.3f, 0.3f);
+		float finalPowerUp = Mathf.Abs(finalPowerZ);
 
-		myRigidbody.AddForce(finalSlide, Mathf.Abs(finalPower), finalPower, ForceMode.Impulse);
+		// Ensure the ball is headed out at least as much as it's headed sideways
+		// preventing the player from just throwing it sideways off of the table
+		if (Mathf.Abs(finalSlide) > finalPowerUp)
+		{
+			finalSlide = finalSlide < 0 ? -finalPowerUp : finalPowerUp;
+		}
+
+		myRigidbody.AddForce(finalSlide, finalPowerUp, finalPowerZ, ForceMode.Impulse);
 	}
 
 	// public static float PredictTrajectoryHeight(Vector3 initialPosition, Vector3 forceVector, float measurePointZ)
