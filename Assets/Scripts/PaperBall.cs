@@ -25,7 +25,6 @@ public class PaperBall : MonoBehaviour
 	private Vector3 dragPosition;
 	private List<Vector3> previousPositions = new List<Vector3>();
 	private SphereCollider myCollider;
-	private BallSpawn ballSpawn;
 
 	private void Awake()
 	{
@@ -33,7 +32,6 @@ public class PaperBall : MonoBehaviour
 		myAudioSource = GetComponent<AudioSource>();
 		myTapHandlers = GetComponent<TapHandlers>();
 		myCollider = GetComponent<SphereCollider>();
-		ballSpawn = Object.FindObjectOfType<BallSpawn>();
 
 		GameManager.SetBall(this);
 	}
