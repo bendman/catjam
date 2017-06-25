@@ -7,6 +7,11 @@ public class Cat : MonoBehaviour {
 	public float followThreshold = 0.1f;
 	public float volleyPower = 0.1f;
 
+	public Sprite jump, idle, rest, lose;
+	private SpriteRenderer sr;
+	private static float spriteChangeTimer = 0.5f;
+	private float tempTime = spriteChangeTimer;
+
 	[SerializeField]
 	private GameObject table;
 	[SerializeField]
@@ -23,24 +28,35 @@ public class Cat : MonoBehaviour {
 
 	void Awake () {
 		myAudioSource = GetComponent<AudioSource>();
+		sr = GetComponent<SpriteRenderer> ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		tempTime -= Time.deltaTime;
 		Move ();
 	}
 
 	void Move(){
+		float distance;
+
+		if(tempTime < 0){
+			SpriteChanger (rest);
+		}
+
 		// Only follow the ball if the cat is receiving
-		if (!GameManager.ball.IsTowardsCat()) { return; }
+		if (!GameManager.ball.IsTowardsCat ()) {
+			return;
+		}
 
 		// Determine how far the cat will go.
 		// His target is all the way to the ball (ball.x - cat.x)
 		// but limited by maxSpeed in either direction
-		float distance = Mathf.Clamp(GameManager.ball.transform.position.x - transform.position.x, -maxSpeed, maxSpeed);
+		distance = Mathf.Clamp (GameManager.ball.transform.position.x - transform.position.x, -maxSpeed, maxSpeed);
 
 		float targetX = transform.position.x + (distance * Time.deltaTime);
-		transform.position = new Vector3(Mathf.Clamp (targetX, -table.transform.lossyScale.x * 0.5f, table.transform.lossyScale.x * 0.5f), transform.position.y, transform.position.z);
+		float actualX = Mathf.Clamp (targetX, -table.transform.lossyScale.x * 0.5f, table.transform.lossyScale.x * 0.5f);
+		transform.position = new Vector3(actualX, transform.position.y, transform.position.z);
 	}
 
 	public void PlayHappySound()
@@ -53,6 +69,7 @@ public class Cat : MonoBehaviour {
 	{
 		int clipIndex = Random.Range(0, upsetClips.Length);
 		myAudioSource.PlayOneShot(upsetClips[clipIndex]);
+		SpriteChanger (lose);
 	}
 
 	public void PlayWinSound()
@@ -65,10 +82,16 @@ public class Cat : MonoBehaviour {
 		myAudioSource.PlayOneShot(loseClip);
 	}
 
+	private void SpriteChanger(Sprite spr){
+			sr.sprite = spr;
+			tempTime = spriteChangeTimer;
+	}
+
 	private void OnCollisionEnter(Collision other){
 		if (other.gameObject == GameManager.ball.gameObject) { 
 			//ball.Reflect ();
 			GameManager.ball.Throw (Random.Range(-0.1f, 0.1f), -volleyPower);
+			SpriteChanger (jump);
 		}
 	}
 }
