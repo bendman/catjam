@@ -17,6 +17,7 @@ public class PaperBall : MonoBehaviour
 	private Vector3 mov;
 
 	private static float reach = 0.5f;
+	private static float tableDepth = 2f;
 	private Rigidbody myRigidbody;
 	private AudioSource myAudioSource;
 	private TapHandlers myTapHandlers;
@@ -126,6 +127,8 @@ public class PaperBall : MonoBehaviour
 	/// </summary>
 	public void Throw(float slide, float power)
 	{
+		bool isTowardsPlayer = transform.position.z > tableDepth / 2;
+
 		// Calculate trajectory to detect if it's going too high
 		// float finalHeight = PredictTrajectoryHeight(transform.position, new Vector3(x, y, z), 2f);
 
@@ -137,15 +140,33 @@ public class PaperBall : MonoBehaviour
 		RotateRandomly();
 
 		float finalPowerZ = Mathf.Clamp(power, -0.13f, 0.13f);
-		float finalSlide = Mathf.Clamp(slide * (finalPowerZ / power), -0.3f, 0.3f);
-		float finalPowerUp = Mathf.Abs(finalPowerZ);
+		float finalSlide = slide;
+		float finalPowerUp = Mathf.Min(Mathf.Abs(finalPowerZ), 0.11f);
 
-		// Ensure the ball is headed out at least as much as it's headed sideways
-		// preventing the player from just throwing it sideways off of the table
+
+		// // Ensure the ball is headed out at least as much as it's headed sideways
+		// // preventing the player from just throwing it sideways off of the table
 		if (Mathf.Abs(finalSlide) > finalPowerUp)
 		{
 			finalSlide = finalSlide < 0 ? -finalPowerUp : finalPowerUp;
 		}
+
+		// Ensure the ball doesn't go sideways enough to go off of the table
+		// Do this by clamping the ball more away from the edge it starts nearest to
+		// Examples:
+		// Ball position -2 means (0 / 2) * -0.3 < finalSlide < (4 / 2) * 0.3
+		// Ball position 2 means finalSlide < 0
+		// Ball position -1.5 means finalSlide > (1.5 / 2) * 0.3
+		float slideRange = isTowardsPlayer ? 2.4f : 4f;
+		float initialX = transform.position.x;
+		float distFromLeft = -slideRange / 2 - initialX;
+		float distFromRight = slideRange / 2 - initialX;
+		float leftMaxAngle = Mathf.Atan2(distFromLeft, tableDepth);
+		float rightMaxAngle = Mathf.Atan2(distFromRight, tableDepth);
+		float leftMaxSlide = Mathf.Tan(leftMaxAngle) * Mathf.Abs(finalPowerZ);
+		float rightMaxSlide = Mathf.Tan(rightMaxAngle) * Mathf.Abs(finalPowerZ);
+
+		finalSlide = Mathf.Clamp(finalSlide, leftMaxSlide, rightMaxSlide);
 
 		myRigidbody.AddForce(finalSlide, finalPowerUp, finalPowerZ, ForceMode.Impulse);
 	}

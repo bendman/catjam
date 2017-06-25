@@ -146,9 +146,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 058ffd20bafd2c3468aceb5c26f2ac59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 2
+  maxSpeed: 1
   followThreshold: 0.1
-  volleyPower: 5
+  volleyPower: 0.1
   table: {fileID: 1393384754978792, guid: 07571ef8da167004ca7eb7ea60669b80, type: 2}
   happyClips:
   - {fileID: 8300000, guid: 41be505107eca4e69a4f9160de245255, type: 3}
