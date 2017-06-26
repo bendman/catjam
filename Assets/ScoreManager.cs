@@ -8,7 +8,7 @@ public class ScoreManager : MonoBehaviour
 	public int catScore { get; private set; }
 	public float scoreBalance { get; private set; }
 
-	public GameManager gm;
+	private GameManager gm;
 
 	private Cat cat;
 
@@ -28,7 +28,7 @@ public class ScoreManager : MonoBehaviour
 			gm.ReloadScene ();
 			++gm.round;
 		}
-		if (gm.round == gm.numOfRounds - 1) {
+		if (gm.round == gm.numOfRounds) {
 //			if (playerScore > catScore) {
 //
 //			} else {
