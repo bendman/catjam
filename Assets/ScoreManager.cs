@@ -29,11 +29,11 @@ public class ScoreManager : MonoBehaviour
 			++gm.round;
 		}
 		if (gm.round == gm.numOfRounds - 1) {
-			if (playerScore > catScore) {
-
-			} else {
-
-			}
+//			if (playerScore > catScore) {
+//
+//			} else {
+//
+//			}
 			gm.LoadEndScene ();
 			gm.round = 0;
 		}

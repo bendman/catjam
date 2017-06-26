@@ -6,6 +6,7 @@ public class Cat : MonoBehaviour {
 	public float maxSpeed = 1f;
 	public float followThreshold = 0.1f;
 	public float volleyPower = 0.1f;
+	public float difficultyMulti = 0.5f;
 
 	private float dir = -1.0f;
 	public static float idleTime = 3.0f;
@@ -36,7 +37,7 @@ public class Cat : MonoBehaviour {
 		myAudioSource = GetComponent<AudioSource>();
 		sr = GetComponent<SpriteRenderer> ();
 
-		maxSpeed += (gm.round * 0.5f);
+		maxSpeed += (gm.round * difficultyMulti);
 	}
 	
 	// Update is called once per frame
