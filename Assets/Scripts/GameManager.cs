@@ -10,8 +10,12 @@ public class GameManager : MonoBehaviour
 
 	public static PaperBall ball { get; private set; }
 
+	public int round = 0;
+	public int numOfRounds = 2;
+
 	private void Awake()
 	{
+
 		// Enforce singleton pattern
 		if (instance == null) { instance = this; }
 		else {
@@ -33,6 +37,12 @@ public class GameManager : MonoBehaviour
 	{
 		Debug.Log("Loading Start Scene");
 		SceneManager.LoadScene(0);
+	}
+
+	public void ReloadScene()
+	{
+		Debug.Log ("Reloading Scene");
+		SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex);
 	}
 
 	public void LoadNextLevel()
